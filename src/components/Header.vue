@@ -31,39 +31,30 @@
                                     Keranjang Belanja &nbsp;
                                     <a href="#">
                                         <i class="icon_bag_alt"></i>
-                                        <span>2</span>
+                                        <span>{{userCart.length}}</span>
                                     </a>
                                     <div class="cart-hover">
                                         <div class="select-items">
                                             <table>
-                                                <tbody>
-                                                    <tr>
+                                                <tbody v-if="userCart.length > 0">
+                                                    <tr v-for="cart in userCart" :key="cart.id">
                                                         <td class="si-pic">
-                                                            <img src="img/product-1.jpg" alt="" />
+                                                            <img class="photo-item" :src="cart.photo" alt="" />
                                                         </td>
                                                         <td class="si-text">
                                                             <div class="product-selected">
-                                                                <p>$15.00 x 1</p>
-                                                                <h6>Patera</h6>
+                                                                <p>${{cart.price}} x 1</p>
+                                                                <h6>{{cart.name}}</h6>
                                                             </div>
                                                         </td>
-                                                        <td class="si-close">
+                                                        <td @click="removeItem(cart.id)" class="si-close">
                                                             <i class="ti-close"></i>
                                                         </td>
                                                     </tr>
+                                                </tbody>
+                                                <tbody v-else>
                                                     <tr>
-                                                        <td class="si-pic">
-                                                            <img src="img/product-2.jpg" alt="" />
-                                                        </td>
-                                                        <td class="si-text">
-                                                            <div class="product-selected">
-                                                                <p>$15.00 x 1</p>
-                                                                <h6>Puspa</h6>
-                                                            </div>
-                                                        </td>
-                                                        <td class="si-close">
-                                                            <i class="ti-close"></i>
-                                                        </td>
+                                                        <td>Keranjang Kosong</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -91,8 +82,44 @@
 <script>
 export default {
   name: 'Header',
-  props: {
-    msg: String
+  data() {
+    return {
+        userCart: []
+    };
+  },
+  methods: {
+      removeItem(idRemove) {
+          
+          //find cart data index from local storage
+          let userCartStorage = JSON.parse(localStorage.getItem("userCart"));
+          let itemUserCartStorage = userCartStorage.map(itemUserCartStorage => itemUserCartStorage.id);
+
+          //compare cart index with idRemove
+          let index = itemUserCartStorage.findIndex(id => id == idRemove);
+          this.userCart.splice(index, 1);
+          
+          //save local storage after remove
+          const parsed = JSON.stringify(this.userCart);
+          localStorage.setItem('userCart', parsed);
+          window.location.reload();
+      }
+  },
+  mounted() {
+    if (localStorage.getItem('userCart')) {
+        try {
+          this.userCart = JSON.parse(localStorage.getItem('userCart'));
+        } 
+        catch(e) {
+            localStorage.removeItem('userCart');
+        }
+    }
   }
 }
 </script>
+
+<style scoped>
+.photo-item{
+    width: 80px;
+    height: 80px;
+}
+</style>
