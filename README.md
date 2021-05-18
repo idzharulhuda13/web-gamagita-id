@@ -2,8 +2,7 @@
 connecting frontend and backend for gamagita.id website
 
 # preview
-if you only wanted to check the overall website you can check in gamagita-frontend or you can click the link below:
-preview: https://cocky-shannon-8cc41d.netlify.app/
+if you only wanted to check the overall website you can check in gamagita-frontend or you can click this link: https://cocky-shannon-8cc41d.netlify.app/
 
 ## Project setup
 ```
