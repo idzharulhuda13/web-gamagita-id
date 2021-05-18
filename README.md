@@ -3,6 +3,8 @@ connecting frontend and backend for gamagita.id website
 
 ## Project setup
 ```
+clone gamagita backend
+import database
 npm install
 ```
 
