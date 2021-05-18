@@ -3,8 +3,9 @@ connecting frontend and backend for gamagita.id website
 
 ## Project setup
 ```
-clone gamagita backend
+gh repo clone idzharulhuda13/gamagita-backend
 import database
+check if your route is correct
 npm install
 ```
 
