@@ -42,11 +42,13 @@
                                     <h3>{{productDetails.name}}</h3>
                                 </div>
                                 <div class="pd-desc">
-                                    <p>{{productDetails.description}}</p>
+                                    <p v-html="productDetails.description"></p>
                                     <h4>${{productDetails.price}}</h4>
                                 </div>
                                 <div class="quantity">
-                                    <router-link to="/shoppingcart" class="primary-btn pd-cart">Add To Cart</router-link>
+                                    <router-link to="/shoppingcart">
+                                    <a @click="saveCart(productDetails.id, productDetails.name, productDetails.price, productDetails.galleries[0].photo)" href="#" class="primary-btn pd-cart">Add To Cart</a>
+                                    </router-link>
                                 </div>
                             </div>
                         </div>
@@ -84,13 +86,8 @@ export default {
     data() {
         return {
             gambar_default: '',
-            thumbs: [
-                "img/products/gamagita_patera1.jpg",
-                "img/products/gamagita_patera2.jpg",
-                "img/products/gamagita_patera3.jpg",
-                "img/products/gamagita_patera4.jpg",
-            ],
-            productDetails: []
+            productDetails: [],
+            userCart: []
         }
     },
     methods: {
@@ -101,16 +98,37 @@ export default {
             this.productDetails = data;
             this.gambar_default = data.galleries[0].photo;
         },
+        saveCart(idProduct, nameProduct, priceProduct, photoProduct) {
+
+            var productStored = {
+                "id": idProduct,
+                "name": nameProduct,
+                "price": priceProduct,
+                "photo": photoProduct
+            }
+
+            this.userCart.push(productStored);
+            const parsed = JSON.stringify(this.userCart);
+            localStorage.setItem('userCart', parsed);
+        }
     },
     mounted() {
-      axios
-        .get("http://127.0.0.1:8001/api/products", {
-            params: {
-                id: this.$route.params.id
+        if (localStorage.getItem('userCart')) {
+            try {
+                this.userCart = JSON.parse(localStorage.getItem('userCart'));
+            } 
+            catch(e) {
+                localStorage.removeItem('userCart');
             }
-        })
-        .then(res => (this.setDataPictures(res.data.data)))
-        .catch(err => console.log(err));
+        }  
+        axios
+            .get("http://127.0.0.1:8000/api/products", {
+                params: {
+                    id: this.$route.params.id
+                }
+            })
+            .then(res => (this.setDataPictures(res.data.data)))
+            .catch(err => console.log(err));
   }
 };
 </script>
