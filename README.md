@@ -9,4 +9,13 @@ if you only wanted to check the overall website you can check in gamagita-fronte
 this project connected with gamagita-backend project so if you want to install this project you need to install gamagita-backend project first
 ```
 if you done installing gamagita-backend then follow this step
+download web-gamagita-id zip or clone github repo
+
+$ vue ui
+
+import downloaded web-gamagita-id
+
+check API route
+
+run in the UI or npm run serve
 ```
